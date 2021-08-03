@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import FullView from './src/Screen/FullView';
 import Dashboard from './src/Screen/Dashboard';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Fav from './src/Screen/Fav'
 import { createStackNavigator } from '@react-navigation/stack';
+import { FavContext } from './src/FavContext';
 
-
-import Reducer from './src/State/reducer'
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -41,10 +40,12 @@ const MyTab = () => {
 
 
 const App = () => {
+  const [fav, setFav] = useState([])
+  
   return (
-    
+    <FavContext.Provider value={{fav,setFav}}>
       <MyTab />
-   
+    </FavContext.Provider>
   )
 }
 

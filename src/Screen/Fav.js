@@ -1,13 +1,31 @@
-import React,{useSate} from 'react'
+import React,{useContext}  from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import { FavContext } from '../FavContext'
 
-const Fav = (props) => {
-    const { id, name } = props.route.params
+const Fav = (props) => { 
+    const { fav } = useContext(FavContext)
+    // // console.log('fav',fav)
+    // const data  =  Object.assign({},fav)
+    // console.log('databsjhk',data.name)
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>id:{id}</Text>
-        <Text>Name:{name}</Text>
-    </View>
+            {
+                fav && fav.length > 0 ? <View>
+                   {
+                       fav.map((item) =>{
+                      console.log(item)
+                           return(
+                               <View key={item.id}>
+                            <Text>{item.name}</Text>
+                            <Text>{item.symbol}</Text>
+                               </View>
+                           )
+                       })
+                   }
+                </View> : <Text>...No Data</Text>
+            }
+
+        </View>
     )
 }
 
