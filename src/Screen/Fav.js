@@ -1,6 +1,6 @@
 import React,{useContext}  from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { FavContext } from '../FavContext'
+import { FavContext } from '../Context/FavContext'
 
 const Fav = (props) => { 
     const { fav } = useContext(FavContext)
@@ -15,7 +15,7 @@ const Fav = (props) => {
                        fav.map((item) =>{
                       console.log(item)
                            return(
-                               <View key={item.id}>
+                               <View key={item.name}>
                             <Text>{item.name}</Text>
                             <Text>{item.symbol}</Text>
                                </View>

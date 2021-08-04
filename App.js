@@ -5,34 +5,35 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Fav from './src/Screen/Fav'
 import { createStackNavigator } from '@react-navigation/stack';
-import { FavContext } from './src/FavContext';
-
+import { FavContext } from './src/Context/FavContext';
+// import Home from './src/Router/Router'
+import Splashscreen from './src/Screen/SplashScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const MyStack = () => {
-  // const [data,setData] = useContext
+
+const MyTab = () => {
 
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Dashboard" component={Dashboard} />
-      <Stack.Screen name="Coin" component={FullView} />
-      <Stack.Screen name="Favorites" component={Fav} />
-    </Stack.Navigator>
+    <Tab.Navigator screenOptions={{
+      headerShown: false
+    }}
+    >
+      <Tab.Screen name="Home" component={Dashboard} />
+      <Tab.Screen name="Favorites" component={Fav} />
+    </Tab.Navigator>
   )
 }
 
-const MyTab = () => {
+const MyStack = () => {
   return (
     <NavigationContainer>
-      <Tab.Navigator screenOptions={{
-        headerShown: false
-      }}
-      >
-        <Tab.Screen name="Home" component={MyStack} />
-        <Tab.Screen name="Favorites" component={Fav} />
-      </Tab.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen name="SplashScreen" component={Splashscreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Dashboard" component={MyTab} />
+        <Stack.Screen name="Coin" component={FullView} />
+      </Stack.Navigator>
     </NavigationContainer>
   )
 }
@@ -41,10 +42,10 @@ const MyTab = () => {
 
 const App = () => {
   const [fav, setFav] = useState([])
-  
+  // console.log(fav)
   return (
-    <FavContext.Provider value={{fav,setFav}}>
-      <MyTab />
+    <FavContext.Provider value={{ fav, setFav }}>
+      <MyStack />
     </FavContext.Provider>
   )
 }
