@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, ImageBackground, Animated } from 'react-native'
 import { wp, hp } from '../helper/helper'
 import { CrytoCoin } from '../assets/image'
-
+import { FavContext } from '../Context/FavContext'
 
 
 const Dashboard = ({ navigation }) => {
 
-    const [cryptodata, setCryptodata] = useState([])
+    const { cryptodata,setCryptodata } = useContext(FavContext)
+    // const [cryptodata,setCryptodata] = useState([])
+
     const Api = async () => {
         let result = await fetch("https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest", {
             headers: {
@@ -28,18 +30,18 @@ const Dashboard = ({ navigation }) => {
 
 
     const handlesubmit = (item) => {
-        
-        console.log(item.item.name)
+
+        // console.log(item.item.name)
         navigation.navigate('Coin', {
-            cmc_rank:item.item.cmc_rank,
-            id:item.item.id,
-            name:item.item.name,
-            platform:item.item.platform,
-            symbol:item.item.symbol,
-            total_supply:item.item.total_supply,
-            date_added:item.item.date_added,
-            item: cryptodata,
-            last_updated:item.item.last_updated
+            // cmc_rank: item.item.cmc_rank,
+            id: item.item.id,
+            // name: item.item.name,
+            // platform: item.item.platform,
+            // symbol: item.item.symbol,
+            // total_supply: item.item.total_supply,
+            // date_added: item.item.date_added,
+            // item: cryptodata,
+            // last_updated: item.item.last_updated
         })
 
     }
@@ -58,7 +60,7 @@ const Dashboard = ({ navigation }) => {
                         keyExtractor={item => item.cmc_rank}
                         renderItem={(item) => {
                             return (
-                                <TouchableOpacity style={styles.subcontainer} onPress={() =>handlesubmit(item)}>
+                                <TouchableOpacity style={styles.subcontainer} onPress={() => handlesubmit(item)}>
                                     <Text
                                         style={styles.rank}>{item.item.cmc_rank}.
                                         <Text
@@ -87,7 +89,7 @@ const styles = StyleSheet.create({
         width: wp('100%'),
         height: hp('100%'),
         justifyContent: 'flex-start',
-     
+
     },
     subcontainer: {
         flex: 1,

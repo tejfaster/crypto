@@ -1,54 +1,115 @@
 import React, { useContext } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, FlatList } from 'react-native'
 import { FavContext } from '../Context/FavContext'
 import { wp, hp } from '../helper/helper'
 import { Coin, CenterCoin } from '../assets/image'
 
-const FullView = (props) => {
-  const { id, name, platform, symbol, total_supply, date_added, item, cmc_rank, last_updated } = props.route.params
-  const { setFav } = useContext(FavContext)
-  const fil = item.data.filter(prod => prod.id === id)
-  const submithandle = () => {
 
-    setFav(fil)
+const FullView = (props) => {
+  const { id } = props.route.params
+  const { fav,setFav, cryptodata } = useContext(FavContext)
+
+  const fil = cryptodata.data.filter(prod => prod.id === id)
+  const submithandle = (item) => {
+    const data = item
+    console.log(data.item)
+    
+    setFav(items => [...items, data.item])
     props.navigation.navigate('Favorites')
   }
-  return (
+  // /
 
+
+  return (
     <View>
-      <ImageBackground source={Coin} resizeMode='cover' style={styles.backgroundimage} blurRadius={30}>
-        <View style={styles.headers}>
-          <Text
-            style={styles.rank}> RANK: {cmc_rank}
-          </Text>
-          <Text
-            style={styles.symbol}>SYM:   {symbol}
-          </Text>
-        </View>
-        <ImageBackground source={CenterCoin} resizeMode='cover' style={styles.centerimage} blurRadius={100} imageStyle={{ borderRadius: 100 }}>
-          <Text style={styles.name} >{name}
-          </Text>
-        </ImageBackground>
-        <Text
-          style={[styles.moredata, { alignSelf: 'center' }]}>Add Date: {date_added}
-        </Text>
-        <Text
-          style={[styles.moredata, { alignSelf: 'center' }]}>Last Date: {last_updated}
-        </Text>
-        <View style={styles.headers}>
-          {
-            platform ? <Text
-              style={styles.moredata}> Platform: {platform}
-            </Text> : <Text style={styles.moredata}>Platform: Nan</Text>
-          }
-          <Text
-            style={styles.moredata}>Total Supply:   {total_supply}
-          </Text>
-        </View>
-        <TouchableOpacity style={styles.fav}>
-          <Text style={[styles.moredata, { fontWeight: '700', fontSize: hp('3%') }]}>FAVORITES</Text>
-        </TouchableOpacity>
-      </ImageBackground>
+      {
+        fil && fil.length && <FlatList
+          data={fil}
+          keyExtractor={item => item.id}
+          renderItem={(item) => {
+            // console.log(item)
+            return (
+              <View key={item.item.cmc_rank}>
+                <ImageBackground source={Coin} resizeMode='cover' style={styles.backgroundimage} blurRadius={30}>
+                  <View style={styles.headers}>
+                    <Text
+                      style={styles.rank}> RANK: {item.item.cmc_rank}
+                    </Text>
+                    <Text
+                      style={styles.symbol}>SYM:   {item.item.symbol}
+                    </Text>
+                  </View>
+                  <ImageBackground source={CenterCoin} resizeMode='cover' style={styles.centerimage} blurRadius={100} imageStyle={{ borderRadius: 100 }}>
+                    <Text style={styles.name} >{item.item.name}
+                    </Text>
+                  </ImageBackground>
+                  <Text
+                    style={[styles.moredata, { alignSelf: 'center' }]}>Add Date: {item.item.date_added}
+                  </Text>
+                  <Text
+                    style={[styles.moredata, { alignSelf: 'center' }]}>Last Date: {item.item.last_updated}
+                  </Text>
+                  <View style={styles.headers}>
+                    {
+                      item.item.platform ? <Text
+                        style={styles.moredata}> Platform: {item.item.platform}
+                      </Text> : <Text style={styles.moredata}>Platform: Nan</Text>
+                    }
+                    <Text
+                      style={styles.moredata}>Total Supply:   {item.item.total_supply}
+                    </Text>
+                  </View>
+                  <TouchableOpacity style={styles.fav} onPress={() => submithandle(item)}>
+                    <Text style={[styles.moredata, { fontWeight: '700', fontSize: hp('3%') }]}>FAVORITES</Text>
+                  </TouchableOpacity>
+                </ImageBackground>
+              </View>
+            )
+          }}
+        />
+      }
+
+
+      {/* fil.map(item => {
+          return (
+            <View key={item.cmc_rank}>
+              <ImageBackground source={Coin} resizeMode='cover' style={styles.backgroundimage} blurRadius={30}>
+                <View style={styles.headers}>
+                  <Text
+                    style={styles.rank}> RANK: {item.cmc_rank}
+                  </Text>
+                  <Text
+                    style={styles.symbol}>SYM:   {item.symbol}
+                  </Text>
+                </View>
+                <ImageBackground source={CenterCoin} resizeMode='cover' style={styles.centerimage} blurRadius={100} imageStyle={{ borderRadius: 100 }}>
+                  <Text style={styles.name} >{item.name}
+                  </Text>
+                </ImageBackground>
+                <Text
+                  style={[styles.moredata, { alignSelf: 'center' }]}>Add Date: {item.date_added}
+                </Text>
+                <Text
+                  style={[styles.moredata, { alignSelf: 'center' }]}>Last Date: {item.last_updated}
+                </Text>
+                <View style={styles.headers}>
+                  {
+                    item.platform ? <Text
+                      style={styles.moredata}> Platform: {item.platform}
+                    </Text> : <Text style={styles.moredata}>Platform: Nan</Text>
+                  }
+                  <Text
+                    style={styles.moredata}>Total Supply:   {item.total_supply}
+                  </Text>
+                </View>
+                <TouchableOpacity style={styles.fav}>
+                  <Text style={[styles.moredata, { fontWeight: '700', fontSize: hp('3%') }]}>FAVORITES</Text>
+                </TouchableOpacity>
+              </ImageBackground>
+            </View>
+          )
+        }) */}
+
     </View>
   )
 }
