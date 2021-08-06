@@ -7,41 +7,13 @@ import { FavContext } from '../Context/FavContext'
 
 const Dashboard = ({ navigation }) => {
 
-    const { cryptodata,setCryptodata } = useContext(FavContext)
-    // const [cryptodata,setCryptodata] = useState([])
-
-    const Api = async () => {
-        let result = await fetch("https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest", {
-            headers: {
-                'X-CMC_PRO_API_KEY': "2592e201-7cb0-41b4-81d5-abacc60ac4ee"
-            }
-        })
-
-        let data = await result.json()
-        let res = await data
-        if (res && res?.data) {
-            setCryptodata(res)
-        }
-    }
-
-    useEffect(() => {
-        Api()
-    }, [])
-
+    const { cryptodata, setCryptodata } = useContext(FavContext)
 
     const handlesubmit = (item) => {
 
         // console.log(item.item.name)
         navigation.navigate('Coin', {
-            // cmc_rank: item.item.cmc_rank,
             id: item.item.id,
-            // name: item.item.name,
-            // platform: item.item.platform,
-            // symbol: item.item.symbol,
-            // total_supply: item.item.total_supply,
-            // date_added: item.item.date_added,
-            // item: cryptodata,
-            // last_updated: item.item.last_updated
         })
 
     }

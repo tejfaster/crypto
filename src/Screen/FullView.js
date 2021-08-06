@@ -7,23 +7,32 @@ import { Coin, CenterCoin } from '../assets/image'
 
 const FullView = (props) => {
   const { id } = props.route.params
-  const { fav,setFav, cryptodata } = useContext(FavContext)
+  const { fav, setFav, cryptodata } = useContext(FavContext)
 
   const fil = cryptodata.data.filter(prod => prod.id === id)
   const submithandle = (item) => {
-    const data = item
-    console.log(data.item)
+    const data = item.item
+    if (fav.length > 0) {
+      // console.log('fav', fav) 
+      const fil = fav.filter(prod => prod.id === data.id)
+      console.log('fil',fil)
     
-    setFav(items => [...items, data.item])
-    props.navigation.navigate('Favorites')
+      if (fil.length > 0) {
+        setFav(fav.filter(prod => prod.id !== data.id))
+      } else {
+        setFav(items => [...items, data])
+      }
+    } else {
+      setFav(items => [...items, data])
+    }
   }
-  // /
 
+  // console.log('fav', fav)
 
   return (
     <View>
       {
-        fil && fil.length && <FlatList
+        fil && fil.length > 0 && <FlatList
           data={fil}
           keyExtractor={item => item.id}
           renderItem={(item) => {
@@ -68,47 +77,6 @@ const FullView = (props) => {
           }}
         />
       }
-
-
-      {/* fil.map(item => {
-          return (
-            <View key={item.cmc_rank}>
-              <ImageBackground source={Coin} resizeMode='cover' style={styles.backgroundimage} blurRadius={30}>
-                <View style={styles.headers}>
-                  <Text
-                    style={styles.rank}> RANK: {item.cmc_rank}
-                  </Text>
-                  <Text
-                    style={styles.symbol}>SYM:   {item.symbol}
-                  </Text>
-                </View>
-                <ImageBackground source={CenterCoin} resizeMode='cover' style={styles.centerimage} blurRadius={100} imageStyle={{ borderRadius: 100 }}>
-                  <Text style={styles.name} >{item.name}
-                  </Text>
-                </ImageBackground>
-                <Text
-                  style={[styles.moredata, { alignSelf: 'center' }]}>Add Date: {item.date_added}
-                </Text>
-                <Text
-                  style={[styles.moredata, { alignSelf: 'center' }]}>Last Date: {item.last_updated}
-                </Text>
-                <View style={styles.headers}>
-                  {
-                    item.platform ? <Text
-                      style={styles.moredata}> Platform: {item.platform}
-                    </Text> : <Text style={styles.moredata}>Platform: Nan</Text>
-                  }
-                  <Text
-                    style={styles.moredata}>Total Supply:   {item.total_supply}
-                  </Text>
-                </View>
-                <TouchableOpacity style={styles.fav}>
-                  <Text style={[styles.moredata, { fontWeight: '700', fontSize: hp('3%') }]}>FAVORITES</Text>
-                </TouchableOpacity>
-              </ImageBackground>
-            </View>
-          )
-        }) */}
 
     </View>
   )

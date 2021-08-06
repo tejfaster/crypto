@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { StyleSheet, View, Image, TouchableOpacity, Text } from 'react-native';
 import { wp, hp } from '../helper/helper';
 import { CrytoCoin } from '../assets/image';
+import { FavContext } from '../Context/FavContext'
 
 const Screen = () => {
     return (
@@ -14,30 +15,49 @@ const Screen = () => {
 }
 
 
-const ScreenDark = ({ navigation }) => {
-    return (
-        <View style={styles.container}>
-
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Dashboard')}>
-                <Text style={styles.text}>ENTER</Text>
-            </TouchableOpacity>
-
-        </View>
-    )
-}
-
-
 const Splashscreen = ({ navigation }) => {
     const [isVisible, setVisible] = useState(true)
+    const { cryptodata, setCryptodata } = useContext(FavContext)
 
+    const Api = async () => {
+        let result = await fetch("https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest", {
+            headers: {
+                'X-CMC_PRO_API_KEY': "2592e201-7cb0-41b4-81d5-abacc60ac4ee"
+            }
+        })
+
+        let data = await result.json()
+        let res = await data
+        if (res && res?.data) {
+            setCryptodata(res)
+        }
+    }
     useEffect(() => {
         const Timeout = setTimeout(() => {
             setVisible(false)
         }, 2000)
 
         return () => clearTimeout(Timeout)
+
+        Api()
     }, [])
 
+    const submithandle = () => {
+        Api()
+        navigation.navigate('Dashboard')
+    }
+
+    const ScreenDark = () => {
+        return (
+            <View style={styles.container}>
+
+                <TouchableOpacity style={styles.button} onPress={submithandle}>
+                    <Text style={styles.text}>ENTER</Text>
+                </TouchableOpacity>
+
+            </View>
+        )
+    }
     return (
         <View style={styles.MainContainer}>
             {

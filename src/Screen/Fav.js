@@ -15,7 +15,7 @@ const Fav = (props) => {
                     keyExtractor={item => item.id}
                     renderItem={(item) =>
                         <View style={styles.container}>
-                            <Text style={styles.text}>{item.item.cmc_rank}.</Text>
+                            <Text style={styles.text}>{item.item.cmc_rank}</Text>
                             <Text style={styles.text}>{item.item.name}</Text>
                             <Text style={styles.text}>{item.item.symbol}</Text>
                         </View>
