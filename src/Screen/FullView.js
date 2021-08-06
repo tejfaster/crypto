@@ -10,13 +10,14 @@ const FullView = (props) => {
   const { fav, setFav, cryptodata } = useContext(FavContext)
 
   const fil = cryptodata.data.filter(prod => prod.id === id)
+  console.log('fil', cryptodata.data)
   const submithandle = (item) => {
     const data = item.item
+
     if (fav.length > 0) {
-      // console.log('fav', fav) 
+
       const fil = fav.filter(prod => prod.id === data.id)
-      console.log('fil',fil)
-    
+
       if (fil.length > 0) {
         setFav(fav.filter(prod => prod.id !== data.id))
       } else {
@@ -27,18 +28,17 @@ const FullView = (props) => {
     }
   }
 
-  // console.log('fav', fav)
+  // console.log('fav', fil)
 
   return (
-    <View>
-      {
-        fil && fil.length > 0 && <FlatList
+     <View>
+           {
+        fil && <FlatList
           data={fil}
           keyExtractor={item => item.id}
           renderItem={(item) => {
-            // console.log(item)
             return (
-              <View key={item.item.cmc_rank}>
+              <View >
                 <ImageBackground source={Coin} resizeMode='cover' style={styles.backgroundimage} blurRadius={30}>
                   <View style={styles.headers}>
                     <Text
@@ -59,11 +59,11 @@ const FullView = (props) => {
                     style={[styles.moredata, { alignSelf: 'center' }]}>Last Date: {item.item.last_updated}
                   </Text>
                   <View style={styles.headers}>
-                    {
+                    {/* {
                       item.item.platform ? <Text
                         style={styles.moredata}> Platform: {item.item.platform}
                       </Text> : <Text style={styles.moredata}>Platform: Nan</Text>
-                    }
+                    } */}
                     <Text
                       style={styles.moredata}>Total Supply:   {item.item.total_supply}
                     </Text>
