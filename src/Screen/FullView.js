@@ -7,23 +7,63 @@ import { Coin, CenterCoin } from '../assets/image'
 
 const FullView = (props) => {
   const { id } = props.route.params
-  const { fav, setFav, cryptodata } = useContext(FavContext)
+  const { fav, setFav, cryptodata, mergeItem, removeItem, value, setItem } = useContext(FavContext)
 
   const fil = cryptodata.data.filter(prod => prod.id === id)
-  console.log('fil', cryptodata.data)
-  const submithandle = (item) => {
+  // console.log('fil', cryptodata.data)
+  const submithandle = async (item) => {
     const data = item.item
 
     if (fav.length > 0) {
 
       const fil = fav.filter(prod => prod.id === data.id)
-
+      console.log(fil)
       if (fil.length > 0) {
+        // try{
+        //   const removevalue = value.filter(prod => prod.id === data.id )
+        //   await removeItem(removevalue.id)
+        // }catch(err){
+        //   console.log('err5',err)
+        // }
         setFav(fav.filter(prod => prod.id !== data.id))
       } else {
+        // if (value.length > 0) {
+        //   try {
+        //     const jsonValue = JSON.stringify(fav)
+        //     await mergeItem(jsonValue)
+        //   } catch (err) {
+        //     console.log('err1',err)
+        //   }
+        // } else {
+        //   try {
+        //     const jsonValue = JSON.stringify(fav)
+        //     await setItem(jsonValue);
+        //     setValue(fav);
+        //   } catch (err) {
+        //     console.log('err2',err)
+        //   }
+        // }
         setFav(items => [...items, data])
       }
-    } else {
+    } 
+    else {
+      console.log('fil', fil)
+      // if (value.length > 0) {
+      //   try {
+      //     const jsonValue = JSON.stringify(fav)
+      //     await mergeItem(jsonValue)
+      //   } catch (err) {
+      //     console.log('err3',err)
+      //   }
+      // } else {
+      //   try {
+      //     const jsonValue = JSON.stringify(fav)
+      //     await setItem(jsonValue);
+      //     setValue(fav);
+      //   } catch (err) {
+      //     console.log('err4',err)
+      //   }
+      // }
       setFav(items => [...items, data])
     }
   }
@@ -31,8 +71,8 @@ const FullView = (props) => {
   // console.log('fav', fil)
 
   return (
-     <View>
-           {
+    <View>
+      {
         fil && <FlatList
           data={fil}
           keyExtractor={item => item.id}

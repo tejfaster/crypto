@@ -7,9 +7,7 @@ import { FavContext } from '../Context/FavContext'
 const Screen = () => {
     return (
         <View style={styles.container}>
-
             <Image source={CrytoCoin} style={styles.logo} />
-
         </View>
     )
 }
@@ -17,7 +15,7 @@ const Screen = () => {
 
 const Splashscreen = ({ navigation }) => {
     const [isVisible, setVisible] = useState(true)
-    const { cryptodata, setCryptodata } = useContext(FavContext)
+    const { cryptodata, setCryptodata,setValue,getItem } = useContext(FavContext)
 
     const Api = async () => {
         let result = await fetch("https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest", {
@@ -32,18 +30,32 @@ const Splashscreen = ({ navigation }) => {
             setCryptodata(res)
         }
     }
+
+    const readItemFromStorage = async () => {
+        try{
+            const jsonValue = await getItem()
+            const item = jsonValue != null ? JSON.parse(jsonValue) : null;
+            setValue(item);
+        }catch(err){
+            console.log(err)
+        }
+      };
+
     useEffect(() => {
+        Api()
+        readItemFromStorage()
         const Timeout = setTimeout(() => {
             setVisible(false)
         }, 2000)
 
-        return () => clearTimeout(Timeout)
-
-        Api()
+        return () => clearTimeout(Timeout)       
     }, [])
+
+  
 
     const submithandle = () => {
         Api()
+        readItemFromStorage()
         navigation.navigate('Dashboard')
     }
 
